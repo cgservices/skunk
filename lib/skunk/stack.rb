@@ -15,7 +15,7 @@ module ActionDispatch
         env = incoming_timestamp(env)
         status, headers, body = @app.call env
         env = outgoing_timestamp(env)
-        close_timestamp(env) if status == '301'
+        close_timestamp(env) if %w(300 301 302 303 304 305 306 307 308).include?(status)
         [status, headers, body]
       end
 
@@ -48,6 +48,7 @@ module ActionDispatch
       end
 
       def close_timestamp(env)
+        return unless env["SKUNK_TRAIL_ID"].present?
         elapsed_time = (Time.now.utc.to_f - env["SKUNK_TRAIL_START_TIMESTAMP"].to_f) * 1000
         if elapsed_time > ::Skunk.log_threshold
           ::ActiveRecord::Base.connection.execute("UPDATE skunk_trails SET request_finish_at='#{Time.now.utc.to_s(:db)}', elapsed_time=#{elapsed_time} WHERE id=#{env["SKUNK_TRAIL_ID"]}")
