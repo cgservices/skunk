@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
-  gem.authors       = ['Luis Doubrava']
-  gem.email         = ['luis@cg.nl']
+  gem.authors       = ['Luis Doubrava', 'Rob van Aarle']
+  gem.email         = ['luis@cg.nl', 'rob@cg.nl']
   gem.description   = 'Skunk'
   gem.summary       = 'Gem to monitor request lengths'
   gem.homepage      = ''
